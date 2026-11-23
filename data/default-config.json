@@ -1,0 +1,15 @@
+{
+  "widgets": [
+    "clock",
+    "weather",
+    "notes",
+    "todos",
+    "pomodoro",
+	"quotes",
+	"exchange_rates"
+  ],
+  "settings": {
+    "theme": "light",
+    "city": "Moscow"
+  }
+}
