@@ -1,13 +1,13 @@
+import * as storage from './storage.js';
 import { getWidget } from './registry.js';
-
-const CONFIG_KEY = 'mydash-config';
+import { exportToFile, importFromFile } from './backup.js';
 
 let currentConfig = null;
 
 async function loadConfig() {
-  const saved = localStorage.getItem(CONFIG_KEY);
+  const saved = storage.get('config');
   if (saved) {
-    return JSON.parse(saved);
+    return saved;
   }
 
   const response = await fetch('data/default-config.json');
@@ -16,7 +16,7 @@ async function loadConfig() {
 }
 
 function saveConfig(config) {
-  localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+  storage.set('config', config);
 }
 
 function applyTheme(theme) {
@@ -81,6 +81,57 @@ function initThemeToggle(config) {
   });
 }
 
+// Кнопки «Экспорт» и «Импорт» создаются здесь и ставятся рядом
+// с кнопкой переключения темы (в её родительский контейнер).
+function initBackup() {
+  const exportBtn = document.createElement('button');
+  exportBtn.className = 'backup-btn';
+  exportBtn.textContent = 'Экспорт';
+
+  const importBtn = document.createElement('button');
+  importBtn.className = 'backup-btn';
+  importBtn.textContent = 'Импорт';
+
+  const importInput = document.createElement('input');
+  importInput.type = 'file';
+  importInput.accept = 'application/json,.json';
+  importInput.hidden = true;
+  document.body.appendChild(importInput);
+
+  const toggle = document.getElementById('theme-toggle');
+  const toolbar = toggle ? toggle.parentElement : document.body;
+  toolbar.appendChild(exportBtn);
+  toolbar.appendChild(importBtn);
+
+  exportBtn.addEventListener('click', () => {
+    try {
+      exportToFile();
+    } catch (err) {
+      alert('Не удалось экспортировать настройки: ' + err.message);
+    }
+  });
+
+  importBtn.addEventListener('click', () => importInput.click());
+
+  importInput.addEventListener('change', async () => {
+    const file = importInput.files[0];
+    importInput.value = '';
+    if (!file) return;
+
+    const ok = confirm(
+      'Импорт заменит все текущие настройки и данные виджетов. Продолжить?'
+    );
+    if (!ok) return;
+
+    try {
+      await importFromFile(file);
+      location.reload();
+    } catch (err) {
+      alert('Ошибка импорта: ' + err.message);
+    }
+  });
+}
+
 function showError(message) {
   const grid = document.getElementById('widget-grid');
   grid.innerHTML = '';
@@ -102,6 +153,8 @@ async function main() {
     applyTheme('light');
     initThemeToggle(currentConfig);
   }
+
+  initBackup();
 }
 
 main();
