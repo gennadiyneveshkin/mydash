@@ -392,3 +392,107 @@ button:hover {
   font-variant-numeric: tabular-nums;
 }
 
+.controls {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+}
+
+.backup-btn {
+  padding: 6px 14px;
+  border: 1px solid rgba(127, 127, 127, 0.4);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.backup-btn:hover {
+  background: rgba(127, 127, 127, 0.12);
+} /* Панель кнопок живёт в шапке: логотип слева, кнопки прижаты к правому краю.
+       position: static не даёт правилам из main.css оторвать панель от потока. */
+    .app-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-header .controls {
+      position: static;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+/* ---------- Перетаскивание карточек ---------- */
+
+.widget-title {
+  cursor: grab;
+  user-select: none;
+}
+
+.widget-title:active {
+  cursor: grabbing;
+}
+
+.widget-card--dragging {
+  opacity: 0.5;
+  border: 1px dashed var(--accent);
+}
+
+/* ---------- Тема «Океан» ---------- */
+
+.theme-ocean {
+  --bg: #0b3a5b;
+  --text: #e0f2fe;
+  --text-muted: #93c5fd;
+  --card-bg: rgba(11, 42, 66, 0.75);
+  --border: rgba(125, 211, 252, 0.25);
+  --accent: #38bdf8;
+  --accent-hover: #7dd3fc;
+  --input-bg: rgba(8, 30, 50, 0.6);
+  --shadow: 0 2px 8px rgba(2, 20, 40, 0.4);
+}
+
+body.theme-ocean {
+  /* Верхний слой — тонировка для читаемости текста.
+     Средний — проверенный снимок Индийского океана у Ле-Морн (Маврикий) с Wikimedia Commons.
+     Нижний — запасной picsum-фон, если снимок однажды перестанет отдаваться. */
+  background-image:
+    linear-gradient(rgba(8, 40, 68, 0.55), rgba(8, 40, 68, 0.75)),
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Aerial_view_of_the_turquoise_waters_of_the_Indian_Ocean_at_Le_Morne_Beach%2C_Mauritius_%2853697980443%29.jpg/1920px-Aerial_view_of_the_turquoise_waters_of_the_Indian_Ocean_at_Le_Morne_Beach%2C_Mauritius_%2853697980443%29.jpg'),
+    url('https://picsum.photos/seed/mydash-ocean/1920/1080');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* ---------- Тема «Мегаполис» ---------- */
+
+.theme-megapolis {
+  --bg: #17092e;
+  --text: #f5f3ff;
+  --text-muted: #c4b5fd;
+  --card-bg: rgba(30, 17, 58, 0.75);
+  --border: rgba(196, 181, 253, 0.25);
+  --accent: #f472b6;
+  --accent-hover: #f9a8d4;
+  --input-bg: rgba(22, 11, 46, 0.6);
+  --shadow: 0 2px 8px rgba(10, 2, 30, 0.5);
+}
+
+body.theme-megapolis {
+  background-image:
+    linear-gradient(rgba(23, 9, 46, 0.6), rgba(23, 9, 46, 0.8)),
+    url('https://picsum.photos/seed/mydash-megapolis/1920/1080');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
